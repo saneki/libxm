@@ -54,6 +54,7 @@ void xm_free_context(xm_context_t*);
  */
 void xm_generate_samples(xm_context_t*, float* output, size_t numsamples);
 
+void xm_generate_samples_pcm_16(xm_context_t* ctx, int16_t* output, size_t numsamples);
 
 
 /** Set the maximum number of times a module can loop. After the

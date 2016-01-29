@@ -1383,3 +1383,20 @@ void xm_generate_samples(xm_context_t* ctx, float* output, size_t numsamples) {
 		xm_sample(ctx, output + (2 * i), output + (2 * i + 1));
 	}
 }
+
+#define SAMPLE_TO_PCM16(FLOAT) ((int16_t)(FLOAT * 0x8000))
+
+static void xm_sample_pcm_16(xm_context_t* ctx, int16_t* left, int16_t* right) {
+	float samples[2];
+	xm_sample(ctx, &samples[0], &samples[1]);
+	*left = SAMPLE_TO_PCM16(samples[0]);
+	*right = SAMPLE_TO_PCM16(samples[1]);
+}
+
+void xm_generate_samples_pcm_16(xm_context_t* ctx, int16_t* output, size_t numsamples) {
+	ctx->generated_samples += numsamples;
+
+	for(size_t i = 0; i < numsamples; i++) {
+		xm_sample_pcm_16(ctx, output + (2 * i), output + (2 * i + 1));
+	}
+}

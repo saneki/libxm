@@ -7,6 +7,9 @@ TARGET_LINK_LIBRARIES(xmtoau ${XM_LIBRARIES} xms)
 ADD_EXECUTABLE(xmtowav xmtowav.c)
 TARGET_LINK_LIBRARIES(xmtowav ${XM_LIBRARIES} xms)
 
+ADD_EXECUTABLE(xmtowavpcm xmtowavpcm.c)
+TARGET_LINK_LIBRARIES(xmtowavpcm ${XM_LIBRARIES} xms)
+
 FIND_PACKAGE(ALSA)
 
 IF(${ALSA_FOUND})
