@@ -9,17 +9,19 @@
 #include "testprog.h"
 #include <time.h>
 
+#define RATE (48000)
+#define BUFFER_SIZE (1 << 15) /* Use a relatively big
+                               * buffer to minimize loop
+                               * impact on
+                               * measurements */
+
 static const unsigned int channels = 2;
-static const unsigned int rate = 48000;
-static const size_t buffer_size = 1 << 15; /* Use a relatively big
-											* buffer to minimize loop
-											* impact on
-											* measurements */
+static const unsigned int rate = RATE;
 static const unsigned int ideal_running_time = 5;
 
 int main(int argc, char** argv) {
 	xm_context_t* ctx;
-	float buffer[buffer_size];
+	float buffer[BUFFER_SIZE];
 	clock_t start, end;
 	double cpu_time, gen_time;
 	unsigned int num_passes = 0;
@@ -38,7 +40,7 @@ int main(int argc, char** argv) {
 	end = clock();
 
 	cpu_time = (double)(end - start) / CLOCKS_PER_SEC;
-	gen_time = (double)num_passes * (double)buffer_size / (channels * rate);
+	gen_time = (double)num_passes * (double)BUFFER_SIZE / (channels * rate);
 	printf("Generated %.2f second(s) of %iHz audio in %.2f CPU seconds, playback speed is %.2fx\n",
 		   gen_time, rate, cpu_time, gen_time / cpu_time);
 
