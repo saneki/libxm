@@ -8,9 +8,11 @@
 
 #include "testprog.h"
 
+#define RATE (48000)
+#define BUFFER_SIZE RATE
+
 static const unsigned int channels = 2;
-static const unsigned int rate = 48000;
-static const size_t buffer_size = rate;
+static const unsigned int rate = RATE;
 
 void puts_uint32_le(uint32_t i, FILE* f) {
 	char* c = (char*)(&i);
@@ -44,7 +46,7 @@ int main(int argc, char** argv) {
 	xm_context_t* ctx;
 	FILE* out;
 	uint32_t num_samples = 0;
-	float buffer[buffer_size];
+	float buffer[BUFFER_SIZE];
 
 	if(argc != 3)
 		FATAL("Usage: %s <xm-file-input> <wav-file-out>\n", argv[0]);
@@ -81,9 +83,9 @@ int main(int argc, char** argv) {
 	puts_uint32_le(0, out); /* Data chunk size. Will be filled later. */
 	
 	while(xm_get_loop_count(ctx) == 0) {
-		xm_generate_samples(ctx, buffer, buffer_size / channels);
-		num_samples += buffer_size;
-		for(size_t k = 0; k < buffer_size; ++k) {
+		xm_generate_samples(ctx, buffer, BUFFER_SIZE / channels);
+		num_samples += BUFFER_SIZE;
+		for(size_t k = 0; k < BUFFER_SIZE; ++k) {
 			union {
 				float f;
 				uint32_t i;

@@ -9,11 +9,13 @@
 #include "testprog.h"
 #include <string.h>
 
+#define RATE (48000)
+#define BUFFER_SIZE (1 << 8) /* Use a small buffer to
+                              * stop shortly after loop
+                              * count gets changed */
+
 static const unsigned int channels = 2;
-static const unsigned int rate = 48000;
-static const size_t buffer_size = (1 << 8); /* Use a small buffer to
-											 * stop shortly after loop
-											 * count gets changed */
+static const unsigned int rate = RATE;
 
 void puts_uint32_be(uint32_t i) {
 	char* c = (char*)(&i);
@@ -37,7 +39,7 @@ void usage(char* progname) {
 
 int main(int argc, char** argv) {
 	xm_context_t* ctx;
-	float buffer[buffer_size];
+	float buffer[BUFFER_SIZE];
 	uint16_t solochn = 0, soloinstr = 0;
 	unsigned long loops = 1;
 
@@ -98,7 +100,7 @@ int main(int argc, char** argv) {
 
 	while(loops == 0 || xm_get_loop_count(ctx) < loops) {
 		xm_generate_samples(ctx, buffer, sizeof(buffer) / (channels * sizeof(float)));
-		for(size_t k = 0; k < buffer_size; ++k) {
+		for(size_t k = 0; k < BUFFER_SIZE; ++k) {
 			union {
 				float f;
 				uint32_t i;
