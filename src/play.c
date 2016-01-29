@@ -273,7 +273,11 @@ static void xm_volume_slide(xm_channel_context_t* ch, uint8_t rawval) {
 	}
 }
 
+#ifdef WIN32
+static float xm_envelope_lerp(xm_envelope_point_t* a, xm_envelope_point_t* b, uint16_t pos) {
+#else
 static float xm_envelope_lerp(xm_envelope_point_t* restrict a, xm_envelope_point_t* restrict b, uint16_t pos) {
+#endif
 	/* Linear interpolation between two envelope points */
 	if(pos <= a->frame) return a->value;
 	else if(pos >= b->frame) return b->value;

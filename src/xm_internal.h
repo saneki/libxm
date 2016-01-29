@@ -11,6 +11,11 @@
 #include <math.h>
 #include <string.h>
 
+// Fix for: error C2065: '__func__' : undeclared identifier
+#ifdef WIN32
+#define __func__ __FUNCTION__
+#endif
+
 #if XM_DEBUG
 #include <stdio.h>
 #define DEBUG(fmt, ...) do {										\
